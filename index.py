@@ -51,7 +51,8 @@ def view():
     else:
         contacts_set = contacts
     if contacts_set is None:
-        return "No contact of email \"{}\" exist.".format(search)
+        message = "No contact of email \"{}\" exist.".format(search)
+        return render_template("redirect.html", message=message)
     return render_template("index.html", contacts=contacts_set)
 
 

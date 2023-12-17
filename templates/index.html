@@ -4,7 +4,7 @@
 
     <form action="/view" method="get" class="tool-bar">
         <label for="search">Enter person's email to search: </label>
-        <input id="search" type="search" name="q" value="{{ request.args.get('q') or '' }}"/>
+        <input id="search" type="email" name="q" value="{{ request.args.get('q') or '' }}"/>
         <input type="submit" value="Search"/>
     </form>
 
@@ -24,6 +24,10 @@
                     <td>{{ contact["email"] }}</td>
                 </tr>
             {% endfor %}
+
+            {% if contacts|length == 1  %}
+                <a href="/view">Go back</a>
+            {% endif %}
         </tbody>
     </table>
 {% endblock %}
