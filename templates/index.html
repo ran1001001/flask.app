@@ -2,7 +2,7 @@
 
 {% block content %}
 
-    <form action="/view" method="get" class="tool-bar">
+    <form action="/contacts" method="get" class="tool-bar">
         <label for="search">Enter person's email to search: </label>
         <input id="search" type="email" name="q" value="{{ request.args.get('q') or '' }}"/>
         <input type="submit" value="Search"/>
@@ -17,17 +17,20 @@
         </tr>
         </thead>
         <tbody>
-            {% for contact in contacts %}
+            {% for i in range(contacts["first_names"]|length) %}
                 <tr>
-                    <td>{{ contact["first"] }}</td>
-                    <td>{{ contact["last"] }}</td>
-                    <td>{{ contact["email"] }}</td>
+                    <td>{{ contacts["first_names"][i] }}</td>
+                    <td>{{ contacts["last_names"][i] }}</td>
+                    <td>{{ contacts["emails"][i] }}</td>
                 </tr>
             {% endfor %}
 
-            {% if contacts|length == 1  %}
-                <a href="/view">Go back</a>
+            {% if contacts["first_names"]|length == 1  %}
+                <a href="/contacts">Go back</a>
             {% endif %}
+            <div>
+                <a href="/add_contact">Create contact</a>
+            </div>
         </tbody>
     </table>
 {% endblock %}

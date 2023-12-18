@@ -2,61 +2,42 @@ from flask import Flask, redirect, render_template, request
 
 app = Flask(__name__)
 
-
-contacts = [
-            {
-                    "first": "John",
-                    "last": "Smith",
-                    "email": "john@example.com"
-                },
-            {
-                    "first": "Dora",
-                    "last": "Crandith",
-                    "email": "dcran@example.com"
-                },
-            {
-                    "first": "Dana",
-                    "last": "White",
-                    "email": "dwhite@example.com"
-                },
-            {
-                    "first": "Dana",
-                    "last": "Black",
-                    "email": "dblack@example.com"
-                },
-            {
-                    "first": "Dana",
-                    "last": "Brown",
-                    "email": "dbrown@example.com"
-                },
-            {
-                    "first": "Joe",
-                    "last": "Rogan",
-                    "email": "jrogan@example.com"
-                }
-        ]
+contacts = {
+        "first_names": ["John", "Dora", "Dana", "Dana", "Dana", "Joe"],
+        "last_names": ["Smith", "Crandith",
+                       "White", "Black", "Brown", "Rogan"
+                       ],
+        "emails": ["john@example.com", "dcran@example.com",
+                   "dwhite@example.com", "dblack@example.com",
+                   "dbrown@example.com", "jrogan@example.com"]
+    }
 
 
-@app.route("/view")
+@app.route("/contacts")
 def view():
     search = request.args.get("q")
 
-    # contacts_set needs to List/s of dicts
+    # contacts_set is set to to dictionary of "key:<List>"
     if search is not None:
-        for index, first_name in enumerate(contacts):
-            if first_name["email"].lower() == search:
-                contacts_set = [contacts[index]]
-                break
-            else:
-                contacts_set = None
+        if search in contacts["emails"]:
+            # index of a contact
+            index = contacts["emails"].index(search)
+            contacts_set = {"first_names": [contacts["first_names"][index]],
+                            "last_names": [contacts["last_names"][index]],
+                            "emails": [contacts["emails"][index]]}
+        else:
+            message = "No contact of email \"{}\" exist.".format(search)
+            return render_template("redirect.html", message=message)
     else:
         contacts_set = contacts
-    if contacts_set is None:
-        message = "No contact of email \"{}\" exist.".format(search)
-        return render_template("redirect.html", message=message)
     return render_template("index.html", contacts=contacts_set)
 
 
 @app.route("/")
 def index():
-    return redirect("/view")
+    return redirect("/contacts")
+
+
+@app.route("/add_contact")
+def add():
+    return render_template("add.html")
