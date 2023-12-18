@@ -3,9 +3,7 @@ from flask import Flask, redirect, render_template, request
 app = Flask(__name__)
 
 
-@app.route("/view")
-def view():
-    contacts = [
+contacts = [
             {
                     "first": "John",
                     "last": "Smith",
@@ -38,6 +36,9 @@ def view():
                 }
         ]
 
+
+@app.route("/view")
+def view():
     search = request.args.get("q")
 
     # contacts_set needs to List/s of dicts
